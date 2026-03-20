@@ -1,0 +1,153 @@
+================================================================
+  DEPED FORM 138-E — Django + MySQL Setup Guide
+  Windows + XAMPP
+================================================================
+
+STEP 1: START XAMPP MYSQL
+--------------------------
+1. Open XAMPP Control Panel
+2. Click START next to MySQL
+3. Click START next to Apache (optional, only needed for phpMyAdmin)
+
+
+STEP 2: CREATE THE DATABASE
+-----------------------------
+1. Open your browser → go to: http://localhost/phpmyadmin
+2. Click "New" on the left sidebar
+3. Name it:  form138e_db
+4. Click "Create"
+5. Click on "form138e_db" in the left sidebar
+6. Click the "Import" tab at the top
+7. Click "Choose File" → select:  form138e_database.sql
+8. Click "Go" at the bottom
+   ✅ You should see "Import has been successfully finished"
+
+
+STEP 3: INSTALL MYSQLCLIENT (Python MySQL driver)
+--------------------------------------------------
+Open Command Prompt (cmd) and run:
+
+    pip install mysqlclient
+
+If mysqlclient fails to install, try this alternative:
+
+    pip install PyMySQL
+
+Then open:  form138e_django/form138e/__init__.py
+And add these two lines:
+
+    import pymysql
+    pymysql.install_as_MySQLdb()
+
+
+STEP 4: PLACE THE PROJECT FOLDER
+----------------------------------
+Put the entire "form138e_django" folder anywhere you like.
+Example:  C:\Users\YourName\Desktop\form138e_django
+
+
+STEP 5: OPEN COMMAND PROMPT IN THE PROJECT FOLDER
+---------------------------------------------------
+1. Open File Explorer → go to your form138e_django folder
+2. Click the address bar at the top → type "cmd" → press Enter
+   (This opens CMD already inside that folder)
+
+
+STEP 6: RUN DJANGO MIGRATIONS
+-------------------------------
+In the CMD window, run these commands one at a time:
+
+    python manage.py makemigrations
+    python manage.py migrate --run-syncdb
+
+This creates the Django session and admin tables in your database.
+Your student data tables are already created from the SQL import.
+
+
+STEP 7: START THE DJANGO SERVER
+---------------------------------
+In CMD, run:
+
+    python manage.py runserver
+
+You should see:
+    Starting development server at http://127.0.0.1:8000/
+
+
+STEP 8: OPEN THE APP IN YOUR BROWSER
+--------------------------------------
+Go to:  http://127.0.0.1:8000/
+
+You should see the DepEd Form 138-E Report Card System!
+
+
+================================================================
+  FILE STRUCTURE OVERVIEW
+================================================================
+
+form138e_django/
+│
+├── manage.py               ← run this to start the server
+├── requirements.txt        ← list of required packages
+├── HOW_TO_RUN.txt          ← this file
+│
+├── form138e/               ← Django project settings
+│   ├── __init__.py
+│   ├── settings.py         ← database connection is here
+│   ├── urls.py             ← main URL router
+│   └── wsgi.py
+│
+└── reportcard/             ← main Django app
+    ├── __init__.py
+    ├── models.py           ← database table definitions
+    ├── views.py            ← handles all API requests
+    ├── urls.py             ← API routes
+    │
+    ├── migrations/
+    │   └── __init__.py
+    │
+    ├── templates/
+    │   └── reportcard/
+    │       └── index.html  ← main HTML page (Django template)
+    │
+    └── static/
+        └── reportcard/
+            ├── style.css   ← all CSS styles
+            └── script.js   ← JavaScript (calls Django API)
+
+
+================================================================
+  API ENDPOINTS
+================================================================
+
+GET  /                           → main page
+GET  /api/student/<lrn>/         → get report card for one student
+GET  /api/students/              → list all students
+POST /api/students/add/          → add a new student
+POST /api/students/delete/<lrn>/ → delete a student
+
+
+================================================================
+  TROUBLESHOOTING
+================================================================
+
+Problem: "No module named 'MySQLdb'"
+Solution: Run:  pip install mysqlclient
+          Or use PyMySQL (see Step 3 above)
+
+Problem: "Access denied for user 'root'@'localhost'"
+Solution: Open settings.py → check PASSWORD field.
+          Default XAMPP has no password, so leave it as: ''
+          If you set a MySQL password, enter it there.
+
+Problem: "django.db.utils.OperationalError: (2003, Can't connect)"
+Solution: Make sure XAMPP MySQL is running (green in Control Panel)
+
+Problem: Static files (CSS/JS) not loading
+Solution: Run:  python manage.py collectstatic
+          Then refresh the page.
+
+Problem: Page loads but data shows "Could not connect to server"
+Solution: Make sure you ran:  python manage.py runserver
+          And that you imported the SQL file in Step 2.
+================================================================

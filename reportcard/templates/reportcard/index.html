@@ -1,0 +1,180 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DepEd Form 138-E | Report Card System</title>
+  <link rel="stylesheet" href="{% static 'reportcard/style.css' %}" />
+</head>
+<body>
+
+<div class="shell no-print">
+
+  <!-- Header -->
+  <div class="topbar">
+    <div class="topbar-logo">
+      <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+    </div>
+    <div class="topbar-title">
+      <h1>DepEd Form 138-E System</h1>
+      <p>Elementary School Report Card — Inararan Elementary School</p>
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <button class="tab active" onclick="showTab('search')">🔍 Search / Print</button>
+    <button class="tab" onclick="showTab('students')">👤 Students</button>
+    <button class="tab" onclick="showTab('add-student')">➕ Add Student</button>
+  </div>
+
+  <!-- TAB 1: SEARCH & PRINT -->
+  <div id="tab-search">
+    <div class="card">
+      <div class="card-title">Generate Report Card <span class="badge">by LRN</span></div>
+      <div class="search-row">
+        <input type="text" id="lrn-input"
+               placeholder="Enter 12-digit LRN (e.g. 114014110013)"
+               maxlength="12"
+               onkeydown="if(event.key==='Enter') searchStudent()" />
+        <button class="btn btn-primary" onclick="searchStudent()">Generate</button>
+      </div>
+      <div class="hint">Enter the student's 12-digit LRN to generate their report card.</div>
+      <div class="error-msg" id="search-error"></div>
+    </div>
+    <div id="result-panel" style="display:none;">
+      <div class="card" id="student-detail-card"></div>
+      <div style="display:flex;gap:10px;margin-bottom:20px;">
+        <button class="btn btn-primary" onclick="window.print()">🖨️ Print Report Card</button>
+        <button class="btn btn-secondary"
+                onclick="document.getElementById('result-panel').style.display='none'">✕ Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB 2: STUDENT LIST -->
+  <div id="tab-students" style="display:none;">
+    <div class="card">
+      <div class="card-title">All Students <span class="badge" id="student-count-badge">0</span></div>
+      <div class="tbl-wrap">
+        <table class="data">
+          <thead>
+            <tr>
+              <th>LRN</th><th>Name</th><th>Sex</th><th>Age</th>
+              <th>Grade</th><th>Section</th><th>S.Y.</th><th>Gen. Avg.</th><th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="students-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB 3: ADD STUDENT -->
+  <div id="tab-add-student" style="display:none;">
+    <div class="card">
+      <div class="card-title">Add New Student</div>
+
+      <!-- Student Info -->
+      <div class="form-grid" style="margin-bottom:16px;">
+        <div class="form-group">
+          <label>LRN (12 digits)</label>
+          <input type="text" id="new-lrn" maxlength="12" placeholder="114014110016" />
+        </div>
+        <div class="form-group">
+          <label>Last Name</label>
+          <input type="text" id="new-lastname" placeholder="Formento" />
+        </div>
+        <div class="form-group">
+          <label>First Name</label>
+          <input type="text" id="new-firstname" placeholder="Nickson" />
+        </div>
+        <div class="form-group">
+          <label>Middle Initial</label>
+          <input type="text" id="new-mi" maxlength="2" placeholder="M" />
+        </div>
+        <div class="form-group">
+          <label>Sex</label>
+          <select id="new-sex"><option>Male</option><option>Female</option></select>
+        </div>
+        <div class="form-group">
+          <label>Birth Date</label>
+          <input type="date" id="new-birthdate" />
+        </div>
+        <div class="form-group">
+          <label>Age (auto-computed)</label>
+          <input type="text" id="new-age-display" readonly
+                 style="background:#f4f6f9;color:#6b7488;" placeholder="Select birth date first" />
+        </div>
+        <div class="form-group">
+          <label>Grade Level</label>
+          <select id="new-grade">
+            <option selected>1</option><option>2</option><option>3</option>
+            <option>4</option><option>5</option><option>6</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Section</label>
+          <input type="text" id="new-section" placeholder="One" />
+        </div>
+        <div class="form-group">
+          <label>School Year</label>
+          <input type="text" id="new-sy" placeholder="2016-2017" />
+        </div>
+        <div class="form-group">
+          <label>School</label>
+          <input type="text" id="new-school" value="INARARAN ELEMENTARY SCHOOL" />
+        </div>
+      </div>
+
+      <!-- Quarterly Grades -->
+      <div class="card-title" style="margin-top:8px;">Quarterly Grades</div>
+      <div class="grades-editor" id="grades-editor"></div>
+
+      <!-- Observed Values -->
+      <div class="card-title" style="margin-top:16px;">Observed Values</div>
+      <div id="values-editor"></div>
+
+      <!-- Attendance Record -->
+      <div class="card-title" style="margin-top:16px;">Attendance Record</div>
+      <div class="tbl-wrap">
+        <table class="data" style="font-size:12px;">
+          <thead>
+            <tr>
+              <th>Row</th>
+              <th>Jun</th><th>Jul</th><th>Aug</th><th>Sep</th><th>Oct</th><th>Nov</th>
+              <th>Dec</th><th>Jan</th><th>Feb</th><th>Mar</th><th>Apr</th>
+            </tr>
+          </thead>
+          <tbody id="attendance-editor"></tbody>
+        </table>
+      </div>
+
+      <!-- Actions -->
+      <div class="form-actions" style="margin-top:20px;">
+        <button class="btn btn-secondary" onclick="resetAddForm()">Clear</button>
+        <button class="btn btn-primary" onclick="addStudent()">Save Student</button>
+      </div>
+      <div class="error-msg" id="add-error"></div>
+    </div>
+  </div>
+
+</div><!-- /.shell -->
+
+<!-- Printable Report Card -->
+<div class="print-section" id="print-area"></div>
+<div class="toast" id="toast"></div>
+
+<script>
+  const CSRF_TOKEN = '{{ csrf_token }}';
+  const API = {
+    getStudent:    '/api/student/',
+    listStudents:  '/api/students/',
+    addStudent:    '/api/students/add/',
+    deleteStudent: '/api/students/delete/',
+  };
+</script>
+<script src="{% static 'reportcard/script.js' %}"></script>
+</body>
+</html>
