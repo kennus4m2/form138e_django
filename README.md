@@ -1,6 +1,8 @@
+
+===============================================
   DEPED FORM 138-E — Django + MySQL Setup Guide
   Windows + XAMPP
-
+===============================================
 
 STEP 1: START XAMPP MYSQL
 --------------------------
@@ -80,9 +82,9 @@ Go to:  http://127.0.0.1:8000/
 You should see the DepEd Form 138-E Report Card System!
 
 
-
+======================================
   FILE STRUCTURE OVERVIEW
-
+======================================
 
 form138e_django/
 │
@@ -115,9 +117,9 @@ form138e_django/
             └── script.js   ← JavaScript (calls Django API)
 
 
-
+==================================
   API ENDPOINTS
-
+==================================
 
 GET  /                           → main page
 GET  /api/student/<lrn>/         → get report card for one student
@@ -126,9 +128,9 @@ POST /api/students/add/          → add a new student
 POST /api/students/delete/<lrn>/ → delete a student
 
 
-
+=================================
   TROUBLESHOOTING
-
+=================================
 
 Problem: "No module named 'MySQLdb'"
 Solution: Run:  pip install mysqlclient
@@ -149,4 +151,4 @@ Solution: Run:  python manage.py collectstatic
 Problem: Page loads but data shows "Could not connect to server"
 Solution: Make sure you ran:  python manage.py runserver
           And that you imported the SQL file in Step 2.
-================================================================
+
