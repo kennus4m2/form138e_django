@@ -243,9 +243,9 @@ This project was built as a practical application of the following database conc
 
 ## 👩‍💻 Developer
 
-Built by **Noemi D. Dioneda**
+Built by **Nickson M. Formento**
 Subject: Information Management
-School: Inararan Elementary School / M. A. Roxas Elementary School
+School:  M. A. Roxas Elementary School / Inararan Elementary School
 
 ---
 
