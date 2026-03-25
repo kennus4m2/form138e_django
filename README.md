@@ -1,154 +1,254 @@
+# 📋 DepEd Form 138-E Report Card System
 
+A web-based report card management system for Philippine elementary schools built with **Django** and **MySQL**. Generates DepEd Form 138-E (Elementary School Report Card) from a student database using an LRN lookup.
 
-  DEPED FORM 138-E — Django + MySQL Setup Guide
-  Windows + XAMPP
-===============================================
+---
 
-STEP 1: START XAMPP MYSQL
---------------------------
-1. Open XAMPP Control Panel
-2. Click START next to MySQL
-3. Click START next to Apache (optional, only needed for phpMyAdmin)
+## 📸 Screenshots
 
+> Search by LRN → generates a print-ready Form 138-E (front and back page)
 
-STEP 2: CREATE THE DATABASE
------------------------------
-1. Open your browser → go to: http://localhost/phpmyadmin
-2. Click "New" on the left sidebar
-3. Name it:  form138e_db
-4. Click "Create"
-5. Click on "form138e_db" in the left sidebar
-6. Click the "Import" tab at the top
-7. Click "Choose File" → select:  form138e_database.sql
-8. Click "Go" at the bottom
-   ✅ You should see "Import has been successfully finished"
+| Feature | Description |
+|---|---|
+| 🔍 Search / Print | Enter student LRN to generate and print the full Form 138-E |
+| 👤 Students | View all enrolled students with their general average |
+| ➕ Add Student | Add a new student with grades, observed values, and attendance |
 
+---
 
-STEP 3: INSTALL MYSQLCLIENT (Python MySQL driver)
---------------------------------------------------
-Open Command Prompt (cmd) and run:
+## 🛠 Tech Stack
 
-    pip install mysqlclient
+| Layer | Technology |
+|---|---|
+| Backend | Python 3.11+ / Django 4.1 |
+| Database | MySQL (via XAMPP / MariaDB) |
+| DB Driver | PyMySQL |
+| Frontend | HTML, CSS, Vanilla JavaScript |
+| Print Layout | CSS `@page` / A4 print stylesheet |
 
-If mysqlclient fails to install, try this alternative:
+---
 
-    pip install PyMySQL
+## 📁 Project Structure
 
-Then open:  form138e_django/form138e/__init__.py
-And add these two lines:
-
-    import pymysql
-    pymysql.install_as_MySQLdb()
-
-
-STEP 4: PLACE THE PROJECT FOLDER
-----------------------------------
-Put the entire "form138e_django" folder anywhere you like.
-Example:  C:\Users\YourName\Desktop\form138e_django
-
-
-STEP 5: OPEN COMMAND PROMPT IN THE PROJECT FOLDER
----------------------------------------------------
-1. Open File Explorer → go to your form138e_django folder
-2. Click the address bar at the top → type "cmd" → press Enter
-   (This opens CMD already inside that folder)
-
-
-STEP 6: RUN DJANGO MIGRATIONS
--------------------------------
-In the CMD window, run these commands one at a time:
-
-    python manage.py makemigrations
-    python manage.py migrate --run-syncdb
-
-This creates the Django session and admin tables in your database.
-Your student data tables are already created from the SQL import.
-
-
-STEP 7: START THE DJANGO SERVER
----------------------------------
-In CMD, run:
-
-    python manage.py runserver
-
-You should see:
-    Starting development server at http://127.0.0.1:8000/
-
-
-STEP 8: OPEN THE APP IN YOUR BROWSER
---------------------------------------
-Go to:  http://127.0.0.1:8000/
-
-You should see the DepEd Form 138-E Report Card System!
-
-
-
-  FILE STRUCTURE OVERVIEW
-======================================
-
+```
 form138e_django/
 │
-├── manage.py               ← run this to start the server
-├── requirements.txt        ← list of required packages
-├── HOW_TO_RUN.txt          ← this file
+├── manage.py                          # Django entry point
+├── requirements.txt                   # Python dependencies
+├── form138e_database.sql              # Full database schema + sample data
+├── complete_seed_data.sql             # SF1-based seed data (21 students)
 │
-├── form138e/               ← Django project settings
-│   ├── __init__.py
-│   ├── settings.py         ← database connection is here
-│   ├── urls.py             ← main URL router
+├── form138e/                          # Django project settings
+│   ├── settings.py                    # Database config (update credentials here)
+│   ├── urls.py                        # Root URL router
 │   └── wsgi.py
 │
-└── reportcard/             ← main Django app
-    ├── __init__.py
-    ├── models.py           ← database table definitions
-    ├── views.py            ← handles all API requests
-    ├── urls.py             ← API routes
+└── reportcard/                        # Main Django app
+    ├── models.py                      # 12 database models (students, grades, etc.)
+    ├── views.py                       # API endpoints (search, add, delete)
+    ├── urls.py                        # App URL routes
     │
-    ├── migrations/
-    │   └── __init__.py
+    ├── migrations/                    # Django migration files
     │
     ├── templates/
     │   └── reportcard/
-    │       └── index.html  ← main HTML page (Django template)
+    │       └── index.html             # Main HTML page (Django template)
     │
     └── static/
         └── reportcard/
-            ├── style.css   ← all CSS styles
-            └── script.js   ← JavaScript (calls Django API)
+            ├── style.css              # All UI and print styles
+            └── script.js             # Frontend logic + print card builder
+```
 
+---
 
+## ⚙️ Installation & Setup
 
-  API ENDPOINTS
-==================================
+### Prerequisites
 
-GET  /                           → main page
-GET  /api/student/<lrn>/         → get report card for one student
-GET  /api/students/              → list all students
-POST /api/students/add/          → add a new student
-POST /api/students/delete/<lrn>/ → delete a student
+- Python 3.11 or 3.12 (64-bit recommended)
+- XAMPP (with MySQL/MariaDB running)
+- Django 4.1
+- PyMySQL
 
+---
 
+### Step 1 — Clone the repository
 
-  TROUBLESHOOTING
-=================================
+```bash
+git clone https://github.com/your-username/form138e-system.git
+cd form138e-system
+```
 
-Problem: "No module named 'MySQLdb'"
-Solution: Run:  pip install mysqlclient
-          Or use PyMySQL (see Step 3 above)
+### Step 2 — Install dependencies
 
-Problem: "Access denied for user 'root'@'localhost'"
-Solution: Open settings.py → check PASSWORD field.
-          Default XAMPP has no password, so leave it as: ''
-          If you set a MySQL password, enter it there.
+```bash
+pip install django==4.1 pymysql
+```
 
-Problem: "django.db.utils.OperationalError: (2003, Can't connect)"
-Solution: Make sure XAMPP MySQL is running (green in Control Panel)
+### Step 3 — Configure the database
 
-Problem: Static files (CSS/JS) not loading
-Solution: Run:  python manage.py collectstatic
-          Then refresh the page.
+Open `form138e/settings.py` and update the database settings:
 
-Problem: Page loads but data shows "Could not connect to server"
-Solution: Make sure you ran:  python manage.py runserver
-          And that you imported the SQL file in Step 2.
+```python
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME':   'form138e_db',   # your database name
+        'USER':   'root',          # XAMPP default
+        'PASSWORD': '',            # XAMPP default (no password)
+        'HOST':   '127.0.0.1',
+        'PORT':   '3306',
+    }
+}
+```
 
+Open `form138e/__init__.py` and make sure it contains:
+
+```python
+import pymysql
+pymysql.version_info = (2, 2, 1, "final", 0)
+pymysql.install_as_MySQLdb()
+```
+
+### Step 4 — Create the database in phpMyAdmin
+
+1. Start XAMPP → click **Start** next to MySQL
+2. Open `http://localhost/phpmyadmin`
+3. Create a new database named `form138e_db`
+4. Click **Import** → upload `form138e_database.sql` → click **Go**
+
+### Step 5 — Import seed data (optional)
+
+To load the 21 sample students from the SF1 register:
+
+1. In phpMyAdmin, select `form138e_db`
+2. Click **Import** → upload `complete_seed_data.sql` → click **Go**
+
+### Step 6 — Apply Django migrations
+
+```bash
+py manage.py migrate --fake-initial
+```
+
+> Use `--fake-initial` because the tables were already created by the SQL import.
+
+### Step 7 — Run the server
+
+```bash
+py manage.py runserver
+```
+
+Open your browser and go to: **http://127.0.0.1:8000/**
+
+---
+
+## 🗄️ Database Schema
+
+The system uses **12 tables** following 3rd Normal Form (3NF):
+
+```
+schools             → school information
+school_years        → school year labels (e.g. 2025-2026)
+teachers            → adviser and principal records
+sections            → grade level + section per school year
+students            → student personal info (LRN, name, birth date, sex)
+enrollments         → links students to sections per school year
+learning_areas      → subjects (Filipino, English, MAPEH sub-components, etc.)
+grades              → quarterly grades (q1–q4) with auto-computed final grade
+core_values         → Maka-Diyos, Makatao, Makakalikasan, Makabansa
+behavior_statements → behavior descriptions per core value
+observed_values     → AO/SO/RO/NO ratings per student per quarter
+attendance          → monthly school days and days present (Jun–Apr)
+```
+
+---
+
+## 🔌 API Endpoints
+
+| Method | URL | Description |
+|---|---|---|
+| GET | `/` | Main page |
+| GET | `/api/student/<lrn>/` | Get full report card data for one student |
+| GET | `/api/students/` | List all students with general average |
+| POST | `/api/students/add/` | Add a new student |
+| POST | `/api/students/delete/<lrn>/` | Delete a student |
+
+---
+
+## 📄 Form 138-E Layout
+
+The printed report card matches the official DepEd Form 138-E format:
+
+**Front Page**
+- Left: Report on Learning Progress and Achievement (grades table + descriptors)
+- Right: Report on Learner's Observed Values (core values + marking legend)
+
+**Back Page**
+- Left: Attendance Record (monthly Jun–Apr) + Parent's/Guardian's Signature
+- Right: School cover info (name, LRN, grade, section, school year, age, sex) + Certificate of Transfer
+
+---
+
+## 📐 Grading System
+
+| Descriptor | Grading Scale | Remarks |
+|---|---|---|
+| Outstanding | 90 – 100 | Passed |
+| Very Satisfactory | 85 – 89 | Passed |
+| Satisfactory | 80 – 84 | Passed |
+| Fairly Satisfactory | 75 – 79 | Passed |
+| Did Not Meet Expectations | Below 75 | Failed |
+
+- **MAPEH** final grade is automatically computed as the average of Music, Arts, Physical Education, and Health
+- **General Average** is computed from all main subjects (MAPEH sub-components excluded)
+- **Age** is automatically computed from birth date
+
+---
+
+## 📚 Lessons Applied (Information Management)
+
+This project was built as a practical application of the following database concepts:
+
+1. **Business Rules** — Structural, Operational, Integrity, and Derivation rules applied throughout the schema
+2. **Normalization** — Schema follows 1NF, 2NF, and 3NF (no redundant data)
+3. **Constraints & Aggregate Functions** — `PRIMARY KEY`, `FOREIGN KEY`, `UNIQUE`, `CHECK`, `NOT NULL`, `DEFAULT`, plus `AVG()`, `COUNT()`, `SUM()`, `MAX()`, `MIN()`
+4. **SQL JOIN** — `INNER JOIN` and `LEFT JOIN` used across all API queries
+
+---
+
+## 🚀 Features
+
+- 🔍 **LRN Lookup** — Search any student by their 12-digit Learner Reference Number
+- 🖨️ **Print-ready** — Generates a properly formatted Form 138-E for direct printing (A4)
+- ➕ **Add Students** — Full form with birth date (auto-computes age), grades, observed values, and attendance
+- 📊 **Auto-computed grades** — Final grade, MAPEH average, general average, and remarks all computed automatically
+- 🗑️ **Delete Students** — Remove students and all related records (cascade)
+- 📅 **Full attendance tracking** — Monthly attendance (Jun–Apr) with school days, days present, and days absent
+
+---
+
+## 🛠 Troubleshooting
+
+| Problem | Solution |
+|---|---|
+| `Table already exists` on migrate | Run `py manage.py migrate --fake-initial` |
+| `mysqlclient 2.2.1 or newer required` | Add `pymysql.version_info = (2, 2, 1, "final", 0)` to `__init__.py` |
+| `Could not connect to server` on website | Make sure XAMPP MySQL is running |
+| `Could not load students` | Check that the SQL was imported correctly in phpMyAdmin |
+| Static files (CSS/JS) not loading | Run `py manage.py collectstatic` |
+| `MariaDB 10.6 or later required` | Use Django 4.1: `pip install django==4.1` |
+
+---
+
+## 👩‍💻 Developer
+
+Built by **Noemi D. Dioneda**
+Subject: Information Management
+School: Inararan Elementary School / M. A. Roxas Elementary School
+
+---
+
+## 📜 License
+
+This project is for academic and educational use only.
