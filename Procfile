@@ -1,1 +1,0 @@
-web : gunicorn form138e_django.wsgi
