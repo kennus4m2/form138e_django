@@ -1,0 +1,239 @@
+/* ================================================================
+   style.css — DepEd Form 138-E Report Card System
+   Stylesheet for layout, UI components, and print layout
+================================================================ */
+
+/* ── Reset & Base ─────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg:         #f4f6f9;
+  --surface:    #ffffff;
+  --border:     #dde2ea;
+  --text:       #1a1f2e;
+  --muted:      #6b7488;
+  --accent:     #1a56db;
+  --accent-lt:  #e8f0fe;
+  --danger:     #c0392b;
+  --success:    #166534;
+  --success-bg: #dcfce7;
+  --warn-bg:    #fef9c3;
+  --shadow:     0 1px 4px rgba(0,0,0,.08), 0 4px 16px rgba(0,0,0,.04);
+}
+body {
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+/* ── Layout ───────────────────────────────────────────────── */
+.shell { max-width: 1100px; margin: 0 auto; padding: 24px 20px 60px; }
+
+/* ── Header bar ───────────────────────────────────────────── */
+.topbar { display: flex; align-items: center; gap: 14px; margin-bottom: 28px; }
+.topbar-logo {
+  width: 46px; height: 46px;
+  background: var(--accent); border-radius: 10px;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.topbar-logo svg { width: 26px; height: 26px; fill: #fff; }
+.topbar-title h1 { font-size: 20px; font-weight: 700; letter-spacing: -.3px; }
+.topbar-title p  { font-size: 13px; color: var(--muted); margin-top: 1px; }
+
+/* ── Tabs ─────────────────────────────────────────────────── */
+.tabs {
+  display: flex; gap: 4px;
+  margin-bottom: 20px;
+  border-bottom: 1.5px solid var(--border);
+}
+.tab {
+  padding: 9px 18px; font-size: 14px; font-weight: 500;
+  border: none; background: none; cursor: pointer;
+  color: var(--muted); border-bottom: 2.5px solid transparent;
+  margin-bottom: -1.5px; border-radius: 6px 6px 0 0; transition: all .15s;
+}
+.tab:hover  { color: var(--text); background: var(--accent-lt); }
+.tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+/* ── Card ─────────────────────────────────────────────────── */
+.card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 12px; padding: 24px;
+  box-shadow: var(--shadow); margin-bottom: 20px;
+}
+.card-title {
+  font-size: 15px; font-weight: 600; margin-bottom: 16px;
+  display: flex; align-items: center; gap: 8px;
+}
+.card-title .badge {
+  font-size: 11px; font-weight: 500;
+  background: var(--accent-lt); color: var(--accent);
+  padding: 2px 8px; border-radius: 20px;
+}
+
+/* ── Search bar ───────────────────────────────────────────── */
+.search-row { display: flex; gap: 10px; }
+.search-row input {
+  flex: 1; padding: 10px 14px;
+  border: 1px solid var(--border); border-radius: 8px;
+  font-size: 14px; outline: none; transition: .15s;
+}
+.search-row input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(26,86,219,.12);
+}
+
+/* ── Buttons ──────────────────────────────────────────────── */
+.btn {
+  padding: 10px 20px; border: none; border-radius: 8px;
+  font-size: 14px; font-weight: 500; cursor: pointer; transition: .15s;
+}
+.btn-primary  { background: var(--accent); color: #fff; }
+.btn-primary:hover  { background: #1648c0; }
+.btn-secondary { background: var(--bg); color: var(--text); border: 1px solid var(--border); }
+.btn-secondary:hover { background: var(--border); }
+.btn-danger { background: #fee2e2; color: var(--danger); border: 1px solid #fca5a5; }
+.btn-danger:hover { background: #fca5a5; }
+.btn-sm { padding: 5px 12px; font-size: 12px; }
+
+/* ── Hints & Errors ───────────────────────────────────────── */
+.hint      { font-size: 12px; color: var(--muted); margin-top: 8px; }
+.error-msg { color: var(--danger); font-size: 13px; margin-top: 8px; min-height: 18px; }
+
+/* ── Data table ───────────────────────────────────────────── */
+.tbl-wrap { overflow-x: auto; }
+table.data { width: 100%; border-collapse: collapse; font-size: 13px; }
+table.data th {
+  background: #f8f9fb; font-weight: 600; color: var(--muted);
+  padding: 8px 12px; text-align: left; border-bottom: 1.5px solid var(--border);
+}
+table.data td {
+  padding: 9px 12px; border-bottom: 1px solid var(--border); vertical-align: middle;
+}
+table.data tr:last-child td { border-bottom: none; }
+table.data tr:hover td { background: #f8f9fb; }
+
+/* ── Pills ────────────────────────────────────────────────── */
+.pill { display: inline-block; padding: 2px 9px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+.pill-pass { background: var(--success-bg); color: var(--success); }
+.pill-fail { background: #fee2e2; color: var(--danger); }
+.pill-blue { background: var(--accent-lt); color: var(--accent); }
+
+/* ── Form ─────────────────────────────────────────────────── */
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.form-grid.col3 { grid-template-columns: 1fr 1fr 1fr; }
+.form-group { display: flex; flex-direction: column; gap: 5px; }
+.form-group label {
+  font-size: 12px; font-weight: 600; color: var(--muted);
+  text-transform: uppercase; letter-spacing: .04em;
+}
+.form-group input, .form-group select {
+  padding: 9px 12px; border: 1px solid var(--border);
+  border-radius: 8px; font-size: 14px; outline: none;
+  background: var(--surface); transition: .15s;
+}
+.form-group input:focus, .form-group select:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(26,86,219,.12);
+}
+.form-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 8px; }
+
+/* ── Grades input grid ────────────────────────────────────── */
+.grades-editor table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.grades-editor th {
+  background: #f8f9fb; padding: 7px 10px; font-size: 12px; font-weight: 600;
+  color: var(--muted); border: 1px solid var(--border); text-align: center;
+}
+.grades-editor td { border: 1px solid var(--border); padding: 4px 6px; }
+.grades-editor td.subj {
+  font-size: 12px; padding-left: 10px; white-space: nowrap; background: #f8f9fb;
+}
+.grades-editor input[type=number] {
+  width: 52px; padding: 4px 6px; border: 1px solid var(--border);
+  border-radius: 5px; font-size: 13px; text-align: center; outline: none;
+}
+.grades-editor input[type=number]:focus { border-color: var(--accent); }
+.grades-editor .computed  { text-align: center; font-weight: 600; }
+.grades-editor .pass-cell { color: var(--success); font-size: 11px; font-weight: 600; }
+.grades-editor .fail-cell { color: var(--danger);  font-size: 11px; font-weight: 600; }
+
+/* ── Toast ────────────────────────────────────────────────── */
+.toast {
+  position: fixed; bottom: 28px; right: 28px;
+  background: var(--text); color: #fff;
+  padding: 12px 20px; border-radius: 10px; font-size: 14px;
+  z-index: 999; opacity: 0; transform: translateY(10px);
+  transition: .3s; pointer-events: none;
+}
+.toast.show    { opacity: 1; transform: translateY(0); }
+.toast.success { background: #15803d; }
+.toast.error   { background: var(--danger); }
+
+/* ── Student detail panel ─────────────────────────────────── */
+.detail-header { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; }
+.avatar {
+  width: 52px; height: 52px; border-radius: 50%;
+  background: var(--accent); color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; font-weight: 700; flex-shrink: 0;
+}
+.detail-meta h2 { font-size: 18px; font-weight: 700; }
+.detail-meta p  { font-size: 13px; color: var(--muted); }
+.info-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+.chip {
+  padding: 4px 12px; background: var(--bg); border: 1px solid var(--border);
+  border-radius: 20px; font-size: 12px; font-weight: 500;
+}
+
+/* ── Grades display ───────────────────────────────────────── */
+.grades-display table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.grades-display th {
+  background: #f8f9fb; padding: 7px 10px; font-size: 12px;
+  color: var(--muted); border-bottom: 1.5px solid var(--border); text-align: center;
+}
+.grades-display td {
+  padding: 7px 10px; border-bottom: 1px solid var(--border); text-align: center;
+}
+.grades-display td.subj { text-align: left; font-size: 12px; }
+.grades-display .final  { font-weight: 700; }
+.gen-avg-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 14px; background: var(--accent-lt); border-radius: 8px;
+  margin-top: 10px; font-weight: 600;
+}
+
+/* ── Print ────────────────────────────────────────────────── */
+.print-section { display: none; }
+
+@media print {
+  body, .shell { background: #fff; padding: 0; margin: 0; }
+  .no-print { display: none !important; }
+  .print-section { display: block !important; }
+  .rc-page { page-break-after: always; }
+}
+
+/* ── Report card print layout ─────────────────────────────── */
+.rc-page {
+  background: #fff; color: #000;
+  font-family: Arial, sans-serif;
+  font-size: 9px; width: 210mm; padding: 8mm;
+}
+.rc-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 4mm; }
+.rc-left, .rc-right { font-size: 8.5px; }
+.rc-left { border-right: 0.5px solid #999; padding-right: 4mm; }
+.rc table { width: 100%; border-collapse: collapse; font-size: 8px; }
+.rc table th {
+  background: #ddd; border: 0.5px solid #999;
+  padding: 2px 3px; font-weight: bold; text-align: center; font-size: 7.5px;
+}
+.rc table td { border: 0.5px solid #999; padding: 2px 3px; }
+.rc table td.subj { text-align: left; font-size: 7.5px; }
+.pass-txt { color: #166534; font-weight: bold; }
+.fail-txt { color: #c0392b; font-weight: bold; }
+
+/* ── Responsive ───────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .form-grid, .form-grid.col3 { grid-template-columns: 1fr; }
+  .search-row { flex-direction: column; }
+  .topbar-title h1 { font-size: 17px; }
+}

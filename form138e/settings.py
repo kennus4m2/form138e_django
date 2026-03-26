@@ -1,4 +1,5 @@
 import pymysql
+import os
 pymysql.version_info = (2, 2, 1, "final", 0)
 pymysql.install_as_MySQLdb()
 
@@ -15,7 +16,7 @@ SECRET_KEY = 'django-form138e-change-this-in-production-abc123xyz'
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -94,5 +95,7 @@ USE_I18N      = True
 USE_TZ        = True
 
 STATIC_URL = '/static/'
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
