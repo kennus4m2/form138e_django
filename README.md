@@ -9,7 +9,7 @@ A web-based report card management system for Philippine elementary schools buil
 > Search by LRN → generates a print-ready Form 138-E (front and back page)
 
 | Feature | Description |
-|---|---|
+| --- | --- |
 | 🔍 Search / Print | Enter student LRN to generate and print the full Form 138-E |
 | 👤 Students | View all enrolled students with their general average |
 | ➕ Add Student | Add a new student with grades, observed values, and attendance |
@@ -19,7 +19,7 @@ A web-based report card management system for Philippine elementary schools buil
 ## 🛠 Tech Stack
 
 | Layer | Technology |
-|---|---|
+| --- | --- |
 | Backend | Python 3.11+ / Django 4.1 |
 | Database | MySQL (via XAMPP / MariaDB) |
 | DB Driver | PyMySQL |
@@ -31,6 +31,7 @@ A web-based report card management system for Philippine elementary schools buil
 ## 📁 Project Structure
 
 ```
+
 form138e_django/
 │
 ├── manage.py                          # Django entry point
@@ -139,7 +140,7 @@ py manage.py migrate --fake-initial
 py manage.py runserver
 ```
 
-Open your browser and go to: **http://127.0.0.1:8000/**
+Open your browser and go to: [http://127.0.0.1:8000/](http://127.0.0.1:8000/)
 
 ---
 
@@ -167,7 +168,7 @@ attendance          → monthly school days and days present (Jun–Apr)
 ## 🔌 API Endpoints
 
 | Method | URL | Description |
-|---|---|---|
+| --- | --- | --- |
 | GET | `/` | Main page |
 | GET | `/api/student/<lrn>/` | Get full report card data for one student |
 | GET | `/api/students/` | List all students with general average |
@@ -180,11 +181,13 @@ attendance          → monthly school days and days present (Jun–Apr)
 
 The printed report card matches the official DepEd Form 138-E format:
 
-**Front Page**
+#### Front Page
+
 - Left: Report on Learning Progress and Achievement (grades table + descriptors)
 - Right: Report on Learner's Observed Values (core values + marking legend)
 
-**Back Page**
+#### Back Page
+
 - Left: Attendance Record (monthly Jun–Apr) + Parent's/Guardian's Signature
 - Right: School cover info (name, LRN, grade, section, school year, age, sex) + Certificate of Transfer
 

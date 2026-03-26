@@ -34,12 +34,12 @@ INSERT INTO school_years (sy_label, sy_start, sy_end) VALUES
 
 -- ── 3. TEACHERS ───────────────────────────────────────────────
 INSERT INTO teachers (school_id, full_name, POSITION, ROLE) VALUES
-(1,'GINALYN GODAL','Teacher I','adviser'),
-(1,'SCHOOL PRINCIPAL','Principal I','principal');
+(1,'GINALYN GODALLE POLO','Teacher I','adviser'),
+(1,'MARY GRACE LIZANO GUSTUIR','Principal I','principal');
 
 -- ── 4. SECTION ────────────────────────────────────────────────
 INSERT INTO sections (school_id, sy_id, grade_level, section_name, adviser_id) VALUES
-(1,1,1,'One',1);
+(1,1,1,'GREEN',1);
 
 -- ── 5. LEARNING AREAS ─────────────────────────────────────────
 INSERT INTO learning_areas (area_code,area_name,parent_area_id,sort_order) VALUES

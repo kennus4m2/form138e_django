@@ -126,7 +126,7 @@ INNER JOIN school_years sy  ON sy.sy_id         = e.sy_id
 INNER JOIN teachers t       ON t.teacher_id     = sec.adviser_id
 INNER JOIN grades g         ON g.enrollment_id  = e.enrollment_id
 INNER JOIN learning_areas la ON la.area_id      = g.area_id
-WHERE s.lrn = '114014110013'
+WHERE s.lrn = '136642230198'
   AND la.parent_area_id IS NULL
 ORDER BY la.sort_order;
 
