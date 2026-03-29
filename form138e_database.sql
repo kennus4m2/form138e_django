@@ -76,7 +76,23 @@
 --   DEFAULT      -> fallback value if none is provided
 --   FOREIGN KEY  -> links two tables together
 -- ================================================================
+CREATE SCHEMA form138e_db;
+USE form138e_db;
 
+SET FOREIGN_KEY_CHECKS = 0;
+DROP TABLE IF EXISTS `attendance`; -- if walang "IF EXISTS" na bagong gawang db, baka magkakaerror
+DROP TABLE IF EXISTS `behavior_statements`;
+DROP TABLE IF EXISTS `core_values`;
+DROP TABLE IF EXISTS `enrollments`;
+DROP TABLE IF EXISTS `grades`;
+DROP TABLE IF EXISTS `learning_areas`;
+DROP TABLE IF EXISTS `observed_values`;
+DROP TABLE IF EXISTS `school_years`;
+DROP TABLE IF EXISTS `schools`;
+DROP TABLE IF EXISTS `sections`;
+DROP TABLE IF EXISTS `students`;
+DROP TABLE IF EXISTS `teachers`;
+SET FOREIGN_KEY_CHECKS = 1;
 
 -- TABLE 1: schools
 -- 3NF: School details stored once, referenced by students and teachers.
