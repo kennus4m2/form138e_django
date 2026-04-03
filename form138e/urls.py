@@ -1,12 +1,14 @@
 """
 form138e/urls.py
-Main URL configuration — routes to the reportcard app
+Main URL configuration — includes static files in DEBUG mode
 """
 
 from django.contrib import admin
-from django.urls import path, include
+from django.urls    import path, include
+from django.conf    import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('reportcard.urls')),   # all reportcard routes
-]
+    path('', include('reportcard.urls')),
+] + static(settings.STATIC_URL, document_root=settings.BASE_DIR / 'reportcard' / 'static')
