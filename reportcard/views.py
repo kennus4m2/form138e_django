@@ -146,8 +146,12 @@ def list_students(request):
                            for a in areas if build_grade_row(a, grades_dict)['final_grade'] is not None]
             gen_avg     = round(sum(main_finals)/len(main_finals), 3) if main_finals else 0
             students.append({
+                'student_id':      student.student_id,
                 'lrn':             student.lrn,
                 'full_name':       student.full_name(),
+                'last_name':       student.last_name,
+                'first_name':      student.first_name,
+                'mi':              student.middle_initial or '',
                 'sex':             student.sex,
                 'birth_date':      str(student.birth_date) if student.birth_date else '',
                 'age':             student.compute_age(),
@@ -159,10 +163,20 @@ def list_students(request):
             })
         except Enrollment.DoesNotExist:
             students.append({
-                'lrn': student.lrn, 'full_name': student.full_name(),
-                'sex': student.sex, 'birth_date': '', 'age': '',
-                'grade': '', 'section': '', 'sy': '',
-                'general_average': 0, 'remarks': '—',
+                'student_id':      student.student_id,
+                'lrn':             student.lrn,
+                'full_name':       student.full_name(),
+                'last_name':       student.last_name,
+                'first_name':      student.first_name,
+                'mi':              student.middle_initial or '',
+                'sex':             student.sex,
+                'birth_date':      '',
+                'age':             '',
+                'grade':           '',
+                'section':         '',
+                'sy':              '',
+                'general_average': 0,
+                'remarks':         '—',
             })
     return JsonResponse({'students': students})
 

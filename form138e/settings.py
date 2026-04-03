@@ -1,7 +1,3 @@
-import pymysql
-pymysql.version_info = (2, 2, 1, "final", 0)
-pymysql.install_as_MySQLdb()
-
 """
 form138e/settings.py
 Django settings for DepEd Form 138-E Report Card System
@@ -94,5 +90,10 @@ USE_I18N      = True
 USE_TZ        = True
 
 STATIC_URL = '/static/'
+
+# Needed for {% static %} tag to resolve app static files
+STATICFILES_DIRS = [
+    BASE_DIR / 'reportcard' / 'static',
+]
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
