@@ -2,3 +2,5 @@ form138e_database_seed_data.sql
 form138e_database_schema.sql
 form138e_database_schema.sql.bak
 form138e_database_seed_data.sql.bak
+form138e_database.sql
+form138e_database_sqljoin_query.sql
